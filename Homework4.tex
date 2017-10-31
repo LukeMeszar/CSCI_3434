@@ -1,0 +1,227 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{blindtext}
+\usepackage{systeme}
+\usepackage{relsize}
+\usepackage{enumerate}
+\usepackage{commath}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{tikz-cd}
+\usetikzlibrary{automata,positioning}
+%\usepackage{hyperref}
+%\hypersetup{
+% colorlinks=false,% hyperlinks will be black
+%linkbordercolor=black,% hyperlink borders will be red
+%pdfborderstyle={/S/U/W 0.25}% border style will be underline of width 1pt
+%}
+\usepackage{chngcntr}
+\usepackage{MnSymbol}
+\usepackage{tikz}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{cleveref}
+
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\J}{\mathbf{J}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\Sb}{\mathbf{S}}
+\newcommand{\Cs}{\mathscr{C}}
+\newcommand{\As}{\mathscr{A}}
+\newcommand{\I}{\textnormal{\textbf{I}}}
+\newcommand{\Id}{\dot{\textnormal{\textbf{I}}}}
+\newcommand{\Top}{\textnormal{\textbf{Top}}}
+\newcommand{\hTop}{\textnormal{\textbf{hTop}}}
+\newcommand{\Groups}{\textnormal{\textbf{Groups}}}
+\newcommand{\Set}{\textnormal{\textbf{Set}}}
+\newcommand{\Xib}{\mathbf{\Xi}}
+\newcommand{\Sym}{\text{Sym}}
+\newcommand{\prid}[1]{\langle #1 \rangle}
+\newcommand{\apoly}[1]{a_{#1} + a_{#1}x+ a_{#1}x^2 + \cdots + a_{#1}x^n}
+\newcommand{\dist}{\textnormal{dist}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\tb}[1]{\textnormal{\textbf{#1}}}
+\newcommand{\es}{\varnothing}
+\newcommand{\sst}{\subset}
+\newcommand{\ssteq}{\subseteq}
+\newcommand{\func}[3]{#1: #2 \to #3}
+\newcommand{\inte}[1]{\textnormal{int}(#1)}
+\newcommand{\bdr}[1]{\textnormal{bdry}(#1)}
+\newcommand{\ifff}{if and only if }
+\newcommand{\st}{such that }
+\newcommand{\wrt}{with respect to }
+\newcommand{\tspace}[1]{\text{T}_#1}
+\newcommand{\mathdash}{\hbox{-}}
+\newcommand{\diam}[1]{\textnormal{diam}(#1)}
+\newcommand{\setst}{\hspace{1mm} | \hspace{1mm} }
+\newcommand{\supp}{\textnormal{support}}
+\newcommand{\clos}{\textnormal{closure}}
+\newcommand{\rel}{\textnormal{rel }}
+\newcommand{\Hom}{\textnormal{Hom}}
+\newcommand{\obj}{\textnormal{obj}}
+\newcommand{\varlisto}[2]{#1_1,#1_2,\ldots,#1_{#2}}
+\newcommand{\varlistz}[2]{#1_0,#1_1,\ldots,#1_{#2}}
+\newcommand{\finv}[2]{#1^{-1}(#2)}
+\newcommand{\disu}{\rotatebox[origin=c]{90}{$\models$}}
+\newcommand{\rank}{\textnormal{rank }}
+\newcommand{\card}{\textnormal{card }}
+\newcommand{\im}{\textnormal{im }}
+\newcommand{\cls}{\textnormal{cls }}
+\newcommand{\rev}{\textnormal{rev }}
+\newcommand{\defeq}{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+
+
+
+%\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution*}{Solution}
+\newtheorem*{remark}{Remark}
+\newtheorem*{remarks}{Remarks}
+
+
+\renewcommand\qedsymbol{$\blacksquare$}
+\setcounter{section}{-1}
+
+\counterwithin*{equation}{section}
+
+\title{CSCI 3434 Theory of Computation Homework 4}
+\author{Luke Meszar (Worked with Jeff Lipnick)}
+\date{November 3, 2017}
+\begin{document}
+\maketitle
+\begin{enumerate}
+	\item[HW 8.1] Describe a TM that accepts the set $\{a^n \setst n \text{ is a power of } 2\}$. Your
+	description should be at the level of the descriptions in Lecture 29 of the TM that accepts $\{ww  \setst w \in \Sigma^*\}$ and the TM that implements the
+	sieve of Eratosthenes. In particular, do not give a list of transitions.
+	\begin{solution*}
+		The machine begins by scanning till it reaches the first blank symbol and where it places and end-marker $\dashv$. It can also count the number of $a$'s mod 2 and reject for any string that isn't even since it is impossible for this string to be in the language. Next, it returns to beginning of the string and then rewrites the first two $a$'s as $\hat{a}$. From here, it enters it's main loop. Scanning from left to right, the machine read until it sees the first $\hat{a}$ which it replaces with $\tilde{a}$. Then it scans until it sees the first $a$ and rewrites it as $\bar{a}$. If it doesn't see an $a$ before seeing $\dashv$, then the machine rejects. Then the machine goes back to the beginning and begins scanning for the first $\hat{a}$ and repeats the same process.
+		
+		 Once all the $\hat{a}$'s have been read, the machine checks if the symbol directly to the left of $\dashv$ is a $\bar{a}$. If it is, the machine accepts the string. Otherwise, the machine reads from the right end-marker to the beginning. Here, it looks for either $\bar{a}$'s or $\tilde{a}$'s and replaces then with $\hat{a}$. Then, the machine goes into the same loop again.   
+		 
+		 Here is an example worked out with a string of 8 $a$'s.
+		 \begin{align*}
+		 &\vdash aaaaaaaa \textvisiblespace\ldots\\
+		 &\vdash \hat{a}\hat{a}aaaaaa\dashv \textvisiblespace\ldots\quad\text{ now entering main loop}\\ 
+		 &\vdash \tilde{a}\hat{a}\bar{a}aaaaa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\bar{a}\bar{a}aaaa\dashv \textvisiblespace\ldots\\
+		 &\vdash \hat{a}\hat{a}\hat{a}\hat{a}aaaa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\hat{a}\hat{a}\hat{a}\bar{a}aaa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\hat{a}\hat{a}\bar{a}\bar{a}aa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\tilde{a}\hat{a}\bar{a}\bar{a}\bar{a}a\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\tilde{a}\tilde{a}\bar{a}\bar{a}\bar{a}\bar{a}\dashv \textvisiblespace\ldots\quad\text{ we have reached the accept condition}\\
+		 \end{align*}
+		 
+		 And here is an example with a string with 6 $a$'s. 
+		  \begin{align*}
+		 &\vdash aaaaaa \textvisiblespace\ldots\\
+		 &\vdash \hat{a}\hat{a}aaaa\dashv \textvisiblespace\ldots\quad\text{ now entering main loop}\\ 
+		 &\vdash \tilde{a}\hat{a}\bar{a}aaa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\bar{a}\bar{a}aa\dashv \textvisiblespace\ldots\\
+		 &\vdash \hat{a}\hat{a}\hat{a}\hat{a}aa\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\hat{a}\hat{a}\hat{a}\bar{a}a\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\hat{a}\hat{a}\bar{a}\bar{a}\dashv \textvisiblespace\ldots\\
+		 &\vdash \tilde{a}\tilde{a}\tilde{a}\hat{a}\bar{a}\bar{a}\dashv \textvisiblespace\ldots\quad\text{ trying to overwrite } \dashv\ \text{ so reject}\
+		 \end{align*}
+		 
+		 The logic behind this algorithm is that the $\hat{a}$'s keep track of the power of two that we have already seen. Then, we use the $\bar{a}$'s to double the number of $a$'s we have seen. The $\tilde{a}'$s are just there so there isn't any confusion about which $a$'s we have already processed and which we have not. Every time we finish doubling the number of $a$'s we have seen, we check if we have seen all of the string by seeing if the last character before $\dashv$ is of the form $\bar{a}$. If the string is not a power of 2, then there will be a point where, in trying to double it, we will have to go past the right end-marker and we can then reject. Since we eliminated odd length strings in the first pass, this covers all the possibilities. 
+	\end{solution*}
+	\item[ME 96] Give a Turing machine with input alphabet $\{a\}$ that on input $a^m$ halts
+	with $a^{m^2}$ written on its tape. Describe the operation of the machine informally.
+	\begin{solution*}
+		We begin by reading until the first blank and add a right end-marker, $\dashv$. Then, we scan through the input again and replace every $a$ with $\bar{a}$. At the left-hand side of the tape, we will write a \$ which requires shifting the entire input over. Then, for each $\bar{a}$, we append a $\hat{a}$ to the beginning of the string. This requires shifting the entire input over each time. Then, we have to remove the first $\hat{a}$ from the beginning of the string which requires shifting everything back to the left. At the end of this process, we will have a string of the form:
+		\[\underbrace{\hat{a}\ldots\hat{a}}_{m-1}\$\underbrace{\bar{a}\ldots\bar{a}}_{m}\]
+		
+		Now, starting from the left-hand side of the input, we scan for the first $\hat{a}$. When we find one, we replace it with a blank, $\textvisiblespace$. Then, the head moves to the first $\bar{a}$. The machine replaces it with $\tilde{a}$ and then appends an $a$ to the end of the string. Then the machine moves back to the \$. Once there are no more $\bar{a}$'s, the machine replaces all $\tilde{a}$'s with $\bar{a}$'s. the machine goes back to the beginning of the string and starts searching for the next $\hat{a}$ and continues looping. 
+		
+		Once all of the $\hat{a}$'s have been replaced with $\textvisiblespace$'s, then the machine left shifts the entire tape overwriting the $\textvisiblespace$'s and \$. Finally, it replaces all the $\tilde{a}$'s with $a$'s and the machine accepts.  
+		
+		Here is an example on a string of length 3. 
+		\begin{align*}
+		&\vdash aaa\textvisiblespace\ldots \\
+		&\vdash aaa \dashv\textvisiblespace\ldots \\
+		&\vdash \bar{a}\bar{a}\bar{a} \dashv\textvisiblespace\ldots \\
+		&\vdash\$ \bar{a}\bar{a}\bar{a} \dashv \textvisiblespace\ldots\\
+		&\vdash\hat{a}\hat{a}\hat{a}\$ \bar{a}\bar{a}\bar{a} \dashv\textvisiblespace\ldots \\
+		&\vdash\hat{a}\hat{a}\$ \bar{a}\bar{a}\bar{a} \dashv\textvisiblespace\ldots \\
+		&\vdash\textvisiblespace\hat{a}\$ \bar{a}\bar{a}\bar{a} \dashv\textvisiblespace\ldots\quad\text{ in 3 ``steps'' we get} \\
+		&\vdash\textvisiblespace\hat{a}\$ \tilde{a}\tilde{a}\tilde{a}aaa \dashv\textvisiblespace\ldots \\
+		&\vdash\textvisiblespace\hat{a}\$ \bar{a}\bar{a}\bar{a}aaa \dashv\textvisiblespace\ldots \\
+		&\vdash\textvisiblespace\textvisiblespace\$ \bar{a}\bar{a}\bar{a}aaa \dashv\textvisiblespace\ldots \\
+		&\vdash\textvisiblespace\textvisiblespace\$ \tilde{a}\tilde{a}\tilde{a}aaaaaa \dashv\textvisiblespace\ldots \\
+		&\vdash\tilde{a}\tilde{a}\tilde{a}aaaaaa \dashv\textvisiblespace\ldots \\
+		&\vdash aaaaaaaaa \dashv\textvisiblespace\ldots \\
+		\end{align*}
+		The main idea of the algorithm is that the $\hat{a}$ keep track how many times we want to multiply the string's length by itself. We only want $m-1\ \hat{a}$'s since we already have a $m$ $a$'s on the tape. Each time we say a $\hat{a}$, we increase the number of $a$'s on the right side by $m$. So, at the end of this process, the number of $a$'s on the right side will be $m + (m-1)m = m^2$. 
+	\end{solution*}
+	\item[HW 9.1] Prove that the following question is undecidable. Given a Turing machine $M$ and state $q$ of $M$, does $M$ ever enter state $q$ on some input?
+	(This problem is analogous to the problem of identifying' dead code:
+	given a PASCAL pro gram containing a designated block of code, will
+	that block of code ever be executed?)
+	\begin{proof}
+		Denote the problem above as $A$. We will prove this by reducing $HP$ to $A$. Assume that $N$ is a TM that decides $A$. We can say that 
+		\[L(N) = \{M\#x\#q \setst M \text{ reaches state } q \text{ on input } x\}.\]
+		Let $M\#x$ be an instance of $HP$. Then consider the computable function $\sigma$ which maps $M\#x$ to $M\#x\#a$. Then, if $N$ halts on $M\#x\#a$, that means that $M$ reaches state $a$ which implies that $M$ halts on $x$. Since HP is undecidable, then $A$ must also be undecidable. 
+	\end{proof}
+	\item[HW 9.2] Prove that it is undecidable whether two given Turing machines accept
+	the same set. (This problem is analogous to determining whether two
+	given PASCAL programs are equivalent.)
+	\begin{proof}
+		content...
+	\end{proof}
+	\item[HW 9.4] Prove that an r.e. set is recursive \ifff there exists an enumeration
+	machine that enumerates it in increasing order.
+	\begin{proof}
+		First, assume that $A$ is an r.e. set that is recursive. Assume that $M$ is a total TM that decides $A$. Then, we can construct the enumeration machine $E$ in the naive way that doesn't work in general. We start the work tape with every string listed in increasing order. The work tape will look like $x_1\#x_2\#x_3\#\ldots$, where $x_1 \leq x_2 \leq x_2 \leq \ldots$. Then, we simulate $M$ in $E$'s finite control. If $M$ accepts $x_i$, then $E$ will enumerate it. If $x_i$ is rejected by $M$, then $E$ will just continue onto the next string. Since $M$ is total, it will always halt so $E$ will never get stuck working on one input and never being able to proceed. Therefore, $E$ will be able to enumerate all strings in $A$. 
+		
+		Conversely, assume that $E$ enumerates a set $A$ in increasing order. We will simulate $E$ with a three tape TM $M$ where $E$ is simulated on the bottom two tapes and the input is on the first tape. We begin simulating $E$ and every time $E$ enumerates a string, we check to conditions. If the input $x$ is equal to the enumerated string $e$, then, the $M$ accepts $x$ and halts. If $x$ is greater than $e$, then we have already passed the place where $x$ would be enumerated so it cannot be in $L(E)$. Thus, $M$ rejects on $x$ and halts. 
+	\end{proof}
+	\item[ME 98] Prove that the class of r.e. sets is dosed under union and intersection.
+	\begin{proof}
+		Let $A$ and $B$ be r.e. sets and let $M_A$ and $M_B$ be TMs that recognize $A$ and $B$ respectively. We begin by showing closure under union. Well,
+		\[A \cup B = \{x \setst x \in L(M_A) \text{ or } x \in L(M_B)\}.\]
+		Construct a new TM, $M_u$ in the following manner: simulate both $M_A$ and $M_B$. On an input $x$, alternative between simulating a step of $M_A$ on $x$ and a step of $M_B$ on $x$. This avoids the problem of having one of the machines loop while the other one is infinitely waiting its turn. In, effect, we are running both TMs concurrently. Then, $M_u$ accepts if either $M_A$ or $M_B$ would have accepted. Since a string $x$ in $A \cup B$ then $M_A$ or $M_B$ will halt on $x$ so $M_u$ will also halt on $x$.
+		
+		To see closure under intersection, we will construct an almost identical TM, $M_i$ to the one in the previous part. Again, it will simulate $M_A$ and $M_B$ using timesharing. The only difference is that $M_i$ will only accept on $x$ when both $M_A$ and $M_B$ would have accepted $x$. 
+	\end{proof}
+	\item[ME 111] One of the following sets is r.e. and the other is not. Which is which?
+	Give proof for both.
+	\begin{enumerate}
+		\item $\{M \setst L(M) \text{ contains at least 481 elements}\}$
+		\item $\{M \setst L(M) \text{ contains at most 481 elements}\}$
+	\end{enumerate}
+	\begin{proof}
+		\leavevmode
+		\begin{enumerate}
+			\item This set is r.e. We will construct a TM $N$ in the following manner. $N$ will be a Universal Turing Machine which takes in input $M\#x_1\#x_2\#\ldots$. It will take in a TM $M$ and all strings in the input alphabet of $M$ properly encoded. Then, $N$ will simulate $M$ on all the inputs using timesharing. Every time $M$ accepts $x_1$ the machine adds a counter to the beginning of the tape. Then, the machine checks if the counter is equal to 481 which can easily be done with a 482 state DFA. If  the counter is equal to 418, then we know that $L(M)$ contains at least 481 elements. Then, the machine can stop simulating $M$ and accept. If a machine has a language with at least 481 elements, then it will always halt. Otherwise, it is not guaranteed to halt since it will constantly be simulating $M$ on different inputs trying to reach 481 accepted strings. Thus, this set is r.e.
+			\item This set is not r.e. We will use the same TM as in the previous part with a slight modification. Instead of seeing if the counter is greater than or equal to 481, it will have to see if the counter is less than or equal to 481. This machine is not guaranteed to halt on all members of the language. Consider a machine, $M'$ that accepts the first 481 strings in $x_1\#x_2\#\ldots$ and then loops on every other input. Then, $N$ will loop on this input since it has to wait for $M'$ to finish running on all strings which is will never do since $M'$ will be looping. It has to simulate $M'$ on all strings in case $M'$ accepts a 482 string which would require $N$ to reject. Thus, this set is not r.e.
+		\end{enumerate}
+	\end{proof}
+\end{enumerate}
+\end{document}
