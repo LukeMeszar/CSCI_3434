@@ -185,22 +185,27 @@
 	given a PASCAL pro gram containing a designated block of code, will
 	that block of code ever be executed?)
 	\begin{proof}
-		Denote the problem above as $A$. We will prove this by reducing $HP$ to $A$. Assume that $N$ is a TM that decides $A$. We can say that 
+		Denote the problem above as $B$. We will prove $B$ is undecidable by reducing $HP$ to $B$. Assume that $N$ is a TM that decides $B$. We can say that 
 		\[L(N) = \{M\#x\#q \setst M \text{ reaches state } q \text{ on input } x\}.\]
-		Let $M\#x$ be an instance of $HP$. Then consider the computable function $\sigma$ which maps $M\#x$ to $M\#x\#a$. Then, if $N$ halts on $M\#x\#a$, that means that $M$ reaches state $a$ which implies that $M$ halts on $x$. Since HP is undecidable, then $A$ must also be undecidable. 
+		Let $\sigma$ be a function that maps $M\#x$ to a Turing Machine $M'$ that has the following behavior: On input $y$, it erases it from its tape, then it runs $M$ on $x$. Then, $M'$ accepts if $M$ halts on $x$. 
+		
+		Then, we can use our machine $N$ on the input $M'\#y\#a$. If $N$ accepts, that means that $M'$ reached state $a$ on input $y$ which means that $M$ halted on $x$. If $N$ rejects, that means that $M'$ never reached the accept state on input $y$ which means that $M$ did not halt on $x$. Thus, $N$ can not be decidable since it could be used to solve the Halting Problem if it were. 
 	\end{proof}
 	\item[HW 9.2] Prove that it is undecidable whether two given Turing machines accept
 	the same set. (This problem is analogous to determining whether two
 	given PASCAL programs are equivalent.)
 	\begin{proof}
-		content...
+		Let $B$ the the problem above. We will prove this my reducing $MP$ to $B$. Let $N$ be a a machine that decides $B$. Then, we can say
+		\[L(N) = \{M\#M' \setst M \text{ and } M' \text{ accept the same language}\}.\]
+		
+		Let $\sigma$ be a function that maps an instance of $MP$, $M\#x$ to the following string: $M\#M'$ where $M'$ is another TM. We will construct $M'$ to be the same as the machine $M$ except this is guaranteed to accept $x$. This can be added by just adding a finite number of states to $M$ that read through the input and check if it equal to $x$ and accept if it is. Then, $M'$ continues on in the same manner as $M$ would. So $M'$ will accept the same language as $M$ except that it will also accept $x$ even if $M$ does not accept it. Then, we run the machine $N$ on input $M\#M'$. If $N$ accepts, then the that means that $M$ and $M'$ accept the same language which must mean that $x \in L(M)$ since we are guaranteed that $x \in L(M')$. If $N$, accepts, then $x \not\in L(M)$ since $L(M) \neq L(M')$. Thus, $B$ cannot be decidable otherwise $MP$ would be decidable. 
 	\end{proof}
 	\item[HW 9.4] Prove that an r.e. set is recursive \ifff there exists an enumeration
 	machine that enumerates it in increasing order.
 	\begin{proof}
 		First, assume that $A$ is an r.e. set that is recursive. Assume that $M$ is a total TM that decides $A$. Then, we can construct the enumeration machine $E$ in the naive way that doesn't work in general. We start the work tape with every string listed in increasing order. The work tape will look like $x_1\#x_2\#x_3\#\ldots$, where $x_1 \leq x_2 \leq x_2 \leq \ldots$. Then, we simulate $M$ in $E$'s finite control. If $M$ accepts $x_i$, then $E$ will enumerate it. If $x_i$ is rejected by $M$, then $E$ will just continue onto the next string. Since $M$ is total, it will always halt so $E$ will never get stuck working on one input and never being able to proceed. Therefore, $E$ will be able to enumerate all strings in $A$. 
 		
-		Conversely, assume that $E$ enumerates a set $A$ in increasing order. We will simulate $E$ with a three tape TM $M$ where $E$ is simulated on the bottom two tapes and the input is on the first tape. We begin simulating $E$ and every time $E$ enumerates a string, we check to conditions. If the input $x$ is equal to the enumerated string $e$, then, the $M$ accepts $x$ and halts. If $x$ is greater than $e$, then we have already passed the place where $x$ would be enumerated so it cannot be in $L(E)$. Thus, $M$ rejects on $x$ and halts. 
+		Conversely, assume that $E$ enumerates a set $A$ in increasing order. We will simulate $E$ with a three tape TM $M$ where $E$ is simulated on the bottom two tapes and the input is on the first tape. We begin simulating $E$ and every time $E$ enumerates a string, we check two conditions. If the input $x$ is equal to the enumerated string $e$, then, the $M$ accepts $x$ and halts. If $e$ is greater than $x$, then we have already passed the place where $x$ would be enumerated so it cannot be in $L(E)$. Since the order is computable Thus, $M$ rejects on $x$ and halts. Otherwise, continue simulating $E$.
 	\end{proof}
 	\item[ME 98] Prove that the class of r.e. sets is dosed under union and intersection.
 	\begin{proof}
