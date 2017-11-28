@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{blindtext}
+\usepackage{systeme}
+\usepackage{relsize}
+\usepackage{enumerate}
+\usepackage{commath}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{tikz-cd}
+\usetikzlibrary{automata,positioning}
+%\usepackage{hyperref}
+%\hypersetup{
+% colorlinks=false,% hyperlinks will be black
+%linkbordercolor=black,% hyperlink borders will be red
+%pdfborderstyle={/S/U/W 0.25}% border style will be underline of width 1pt
+%}
+\usepackage{chngcntr}
+\usepackage{MnSymbol}
+\usepackage{tikz}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{cleveref}
+
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\V}{\mathbf{V}}
+\newcommand{\J}{\mathbf{J}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\Sb}{\mathbf{S}}
+\newcommand{\Cs}{\mathscr{C}}
+\newcommand{\As}{\mathscr{A}}
+\newcommand{\I}{\textnormal{\textbf{I}}}
+\newcommand{\Id}{\dot{\textnormal{\textbf{I}}}}
+\newcommand{\Top}{\textnormal{\textbf{Top}}}
+\newcommand{\hTop}{\textnormal{\textbf{hTop}}}
+\newcommand{\Groups}{\textnormal{\textbf{Groups}}}
+\newcommand{\Set}{\textnormal{\textbf{Set}}}
+\newcommand{\Xib}{\mathbf{\Xi}}
+\newcommand{\Sym}{\text{Sym}}
+\newcommand{\prid}[1]{\langle #1 \rangle}
+\newcommand{\apoly}[1]{a_{#1} + a_{#1}x+ a_{#1}x^2 + \cdots + a_{#1}x^n}
+\newcommand{\dist}{\textnormal{dist}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\tb}[1]{\textnormal{\textbf{#1}}}
+\newcommand{\es}{\varnothing}
+\newcommand{\sst}{\subset}
+\newcommand{\ssteq}{\subseteq}
+\newcommand{\func}[3]{#1: #2 \to #3}
+\newcommand{\inte}[1]{\textnormal{int}(#1)}
+\newcommand{\bdr}[1]{\textnormal{bdry}(#1)}
+\newcommand{\ifff}{if and only if }
+\newcommand{\st}{such that }
+\newcommand{\wrt}{with respect to }
+\newcommand{\tspace}[1]{\text{T}_#1}
+\newcommand{\mathdash}{\hbox{-}}
+\newcommand{\diam}[1]{\textnormal{diam}(#1)}
+\newcommand{\setst}{\hspace{1mm} | \hspace{1mm} }
+\newcommand{\supp}{\textnormal{support}}
+\newcommand{\clos}{\textnormal{closure}}
+\newcommand{\rel}{\textnormal{rel }}
+\newcommand{\Hom}{\textnormal{Hom}}
+\newcommand{\obj}{\textnormal{obj}}
+\newcommand{\varlisto}[2]{#1_1,#1_2,\ldots,#1_{#2}}
+\newcommand{\varlistz}[2]{#1_0,#1_1,\ldots,#1_{#2}}
+\newcommand{\finv}[2]{#1^{-1}(#2)}
+\newcommand{\disu}{\rotatebox[origin=c]{90}{$\models$}}
+\newcommand{\rank}{\textnormal{rank }}
+\newcommand{\card}{\textnormal{card }}
+\newcommand{\im}{\textnormal{im }}
+\newcommand{\cls}{\textnormal{cls }}
+\newcommand{\rev}{\textnormal{rev }}
+\newcommand{\defeq}{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+
+
+
+%\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{solution*}{Solution}
+\newtheorem*{remark}{Remark}
+\newtheorem*{remarks}{Remarks}
+
+
+\renewcommand\qedsymbol{$\blacksquare$}
+\setcounter{section}{-1}
+
+\counterwithin*{equation}{section}
+
+\title{CSCI 3434 Theory of Computation Homework 5}
+\author{Luke Meszar (Worked with Jeff Lipnick)}
+\date{December 4, 2017}
+\begin{document}
+\maketitle
+\begin{enumerate}
+	\item Show that the language $L = \{x\$y : x,y \in \{a,b\}^*, x \text{ a substring of } y\}$ is not context free using closure properties only.  Use the fact that CFLs are closed under: union, intersection WITH REGULAR LANGUAGES (not other CFLs), concatenation, asterate (star operation), homomorphism, and inverse homomorphism.  You may also use the fact that the following languages are not context free: $\{a^n b^n a^n : n \geq 0\}, \{a^n b^n c^n : n \geq 0\}, \{a^n b^m a^n b^m : m,n \geq 0\}$.
+	\item Show that the variant of the halting problem HP$\epsilon = \{M : M \text{ halts on the empty string}\}$ is r.e.-complete: HP$\epsilon$ is in r.e., and every r.e. language L reduces to HP$\epsilon$. (Here the reduction is the usual one for TMs: a deterministic total TM).
+	\begin{solution*}
+		This language is r.e. since the machine that runs $M$ on $\epsilon$ and accepts if $M$ halts will recognize this language. Now to show that HP$\epsilon$ is r.e. complete, we will reduce MP to it. Since every r.e. language can be reduced to MP, we can first perform this reduction and then reduce MP to HP$\epsilon$ to show that every language can be reduced to HP$\epsilon$. Given an input $M\#x$ for MP, construct the following machine $M'$: on input $y$, ignore it and run $M$ on $x$. If $M$ accepts $x$, then accept $y$. If $M$ rejects $x$, then enter a looping state. We know $M\#x \in $ MP $\iff$ $M$ accepts $x \iff L(M') = \Sigma^* \iff\epsilon \in L(M') \iff M'$ halts on $\epsilon \iff M' \in $HP$\epsilon$. If $M\#x \not\in$ MP, then there are two cases. First, $M$ rejects $x \implies$ $M'$ loops on $y$ $\implies L(M') = \es \iff M'$ does not halt on $\epsilon \iff M' \not\in $ HP$\epsilon$. Second, $M$ loops on $x \implies L(M') = \es \iff M'$ does not halt on $\epsilon \iff M' \not\in $ HP$\epsilon$.
+	\end{solution*}
+	\item Show that EMPTY = $\{M : L(M) \text{ is empty}\}$ is co-r.e.-complete: EMPTY is co-r.e., and every co-r.e. language $L$ reduces to EMPTY.
+\item Show that the following problem is NP-complete.  You are presented with a $n \times m$ Go board (with $n$ rows and $m$ columns) where some board spaces contain stones, which can be colored either black or white.  Unlike the actual game of Go, your task is to remove a bunch of stones subject to the following two constraints: 1. within each column you either remove all white stones or all black stones (no mixing, and no partial removal), and 2. the final board must have at least one stone in each row.  The problem is to determine, given an initial board and stone placement, whether or not you can accomplish your task.  Formally, you wish to show that the language $L = \{\langle B \rangle | B \text{ is an initial board and stone placement with a valid solution}\}$ is NP-complete.
+\item You just found out that your laptop will self-destruct imminently, and need to copy $n$ sensitive files to $k$ 1GB flash drives.  Given the file sizes of your $n$ files, you would like to know whether or not you can copy all $n$ files to your $k$ flash drives without splitting any file into pieces.  Show that this problem is NP-complete by reduction from
+\begin{equation*}
+\text{PARTITION} = \{\langle A\rangle | A \text{ is an array of positive integers which can be divided exactly in two}\},
+\end{equation*}
+ which is a known NP-complete problem.
+\item Several problems we have discussed (or will discuss) involve a natural optimization problem of the form "find the largest (or smallest) $X$", which we then threshold to turn it into a decision problem, of the form "decide whether there is an X of size at least (or at most) $k$".  It is clear that the optimization problem is "harder" in the sense that if you could find the largest $X$, you could see if $|X|\geq k$ to solve the decision problem.  Show that the opposite is also true: given an algorithm $A$ for the decision problem, you can solve the optimization problem using only polynomial many calls to $A$.  For concreteness, you may restrict your attention to the independent set problem (IndepSet), where you want an algorithm to find the largest independent set of G given an algorithm $A(G,k)$ which tells you whether there exists one of size $k$, but discuss how this general trick extends to any decision/optimization problem.  To be truly polynomial time, your algorithm should run in time polynomial in $(\text{size}(G) + \log k)$, since representing the integer $k$ as a string takes only $\log k$ symbols.
+
+\end{enumerate}
+\end{document}
